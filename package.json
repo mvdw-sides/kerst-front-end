@@ -2,6 +2,7 @@
   "name": "wish-lists",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://kerst.vdweem.xyz",
   "dependencies": {
     "axios": "^0.18.0",
     "history": "^4.7.2",
