@@ -1,0 +1,140 @@
+.header {
+  text-align: center;
+}
+
+.header h2{
+  color:#f8f8f8;
+  font-size: 3em;
+}
+
+.header h2 i {
+  font-size: 2em;
+}
+
+.box {
+  margin:0 auto;
+  width: 960px;
+  background: #f8f8f8;
+  color: #000100;
+  min-height: 100px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 8px #94c5cc;
+}
+
+.menu a{
+  color: #f8f8f8;
+  text-decoration: none;
+  border-bottom: 1px dotted #f8f8f8;
+  padding: 10px 10px;
+  margin: 10px;
+}
+
+.menu a:hover {
+  background: #f8f8f8;
+  color: #b4d2e7;
+}
+
+.box h3 {
+  text-align:center;
+  width: 100%;
+  display:block;
+  padding: 25px 0;
+  color: #a1a6b4;
+}
+
+.box .user-select {
+  display:flex;
+  padding-bottom: 25px;
+
+}
+
+.box .user-select .profile:hover{
+  cursor:pointer;
+  color: #a1a6b4;
+  text-decoration: underline;
+}
+
+.box .user-select .profile:first-child {
+  padding: 0px 50px 10px 50px;
+}
+
+.box .user-select .profile {
+  padding: 0px 50px 10px 0px;
+  text-align: center;
+  width:20%;
+}
+
+
+.box .user-select .profile .img{
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 100px;
+  margin: 10px auto;
+  background-size: contain;
+  background-position:center;
+}
+
+.padded {
+  margin: 25px auto;
+  padding:20px 50px 50px 50px;
+  width: 860px
+}
+
+input {
+  appearance: none;
+  width: 100%;
+  padding:5px;
+  margin: 10px 0;
+  font-size: 1.4em;
+  border: 1px solid #94c5cc;
+}
+
+select {
+  appearance: none;
+  padding:5px;
+  font-size: 1.4em;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 0;
+  border: 1px solid #94c5cc;
+}
+
+.formWrapper span {
+  width:100%;
+  font-size:1.4em;
+}
+
+.btn {
+  text-align: center;
+  padding:10px;
+  width:100%;
+  color: #f8f8f8;
+  background: #a1a6b4;
+  border:none;
+  border:1px solid #a1a6b4;
+  font-size:1.3em;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background: #f8f8f8;
+  color: #a1a6b4;
+  border:1px solid #a1a6b4;
+}
+
+.btnSmall {
+  font-size: .9em;
+}
+
+table {
+  width:100%;
+}
+
+th {
+  text-align: left;
+}
+td {
+  padding:5px 2px 15px 0;
+  border-bottom: 1px dotted #a1a6b4;
+}
