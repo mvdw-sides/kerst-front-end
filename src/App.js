@@ -17,6 +17,7 @@ class App extends Component {
       users: [],
       user: null,
       auth: null,
+      message: null,
     }
 
     this.setUser = this.setUser.bind(this);
@@ -71,14 +72,21 @@ class App extends Component {
   }
 
   async getUsers() {
-    const response = await this.req.get(`/users`);
-    this.setState({users: response.data});
+    try {
+      const response = await this.req.get(`/users`);
+      this.setState({users: response.data, message: null});
+    } catch(e) {
+      localStorage.removeItem('pw');
+      this.setState({auth: null, message: 'verkeerde wachtwoord'})
+    }
+    
   }
 
   render() {
 
-    const {users, user, auth} = this.state;
+    const {users, user, auth, message} = this.state;
 
+    const error = message? <h5 style={{color:'red', textAlign: 'center'}}>{message}</h5> : null;
     let menu;
     if (user) {
       menu = (
@@ -94,6 +102,7 @@ class App extends Component {
           <h2><i className="ion ion-ios-list-outline"></i> <br /> kerst wens lijstjes</h2>
           { menu }
         </header>
+        { error }
         { !auth ? <Auth {...this.props} setPass={this.setPass}/> : (
           <Switch>
           <Route exact path="/" component={(props) => <SelectUser {...this.props} req={this.req} {...props} users={users} setUser={this.setUser}/>} />
