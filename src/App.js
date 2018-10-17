@@ -77,7 +77,8 @@ class App extends Component {
       this.setState({users: response.data, message: null});
     } catch(e) {
       localStorage.removeItem('pw');
-      this.setState({auth: null, message: 'verkeerde wachtwoord'})
+
+      this.setState({auth: null, message: this.state.auth ? 'verkeerde wachtwoord' : ''})
     }
     
   }
@@ -86,7 +87,7 @@ class App extends Component {
 
     const {users, user, auth, message} = this.state;
 
-    const error = (message && auth)? <h5 style={{color:'red', textAlign: 'center'}}>{message}</h5> : null;
+    const error = message? <h5 style={{color:'red', textAlign: 'center'}}>{message}</h5> : null;
     let menu;
     if (user) {
       menu = (
