@@ -86,7 +86,7 @@ class App extends Component {
 
     const {users, user, auth, message} = this.state;
 
-    const error = message? <h5 style={{color:'red', textAlign: 'center'}}>{message}</h5> : null;
+    const error = (message && auth)? <h5 style={{color:'red', textAlign: 'center'}}>{message}</h5> : null;
     let menu;
     if (user) {
       menu = (
