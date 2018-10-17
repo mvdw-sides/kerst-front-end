@@ -87,17 +87,17 @@ export class User extends Component {
                     <input type="text" name="link" onChange={event => this.handleChange(event)}/>
                     <span>Prijs</span>
                     <select name="price" onChange={event => this.handleChange(event)}>
-                        <option>€1-€10</option>
+                        <option selected>€1-€10</option>
                         <option>€10-€25</option>
                         <option>€25-€50</option>
                         <option>€50-€100</option>
                         <option>€100+</option>
                     </select>
-                    <span>Hoe graag hebben factor</span>
+                    <span>Hoe graag hebben factor (1 is laag, 5 is hoog)</span>
                     <select name="factor" onChange={event => this.handleChange(event)}>
                         <option>1</option>
                         <option>2</option>
-                        <option>3</option>
+                        <option selected >3</option>
                         <option>4</option>
                         <option>5</option>
                     </select>
