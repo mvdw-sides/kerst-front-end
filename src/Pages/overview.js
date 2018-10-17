@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 export class Overview extends Component {
 
@@ -19,12 +18,12 @@ export class Overview extends Component {
   }
 
   async getItems(){
-    const response = await axios.get(`${this.props.base}/users/${this.state.user._id}/overview`);
+    const response = await this.props.req.get(`/users/${this.state.user._id}/overview`);
     this.setState({items: response.data});
   }
 
   async purchase(_id) {
-    await axios.post(`${this.props.base}/users/${this.state.user._id}/purchases`, { _id });
+    await this.props.req.post(`/users/${this.state.user._id}/purchases`, { _id });
     const items = this.state.items.filter((item) => {
         return (item.item._id !== _id)
     });

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 export class User extends Component {
 
@@ -27,7 +26,7 @@ export class User extends Component {
   }
 
   async getItems(){
-    const response = await axios.get(`${this.props.base}/users/${this.state.user._id}`);
+    const response = await this.props.req.get(`/users/${this.state.user._id}`);
     this.setState({items: response.data.items});
   }
 
@@ -43,7 +42,7 @@ export class User extends Component {
         product, link, price, factor
       });
 
-      const response = await axios.post(`${this.props.base}/users/${this.state.user._id}`, {
+      const response = await this.props.req.post(`/users/${this.state.user._id}`, {
         product, link, price, factor
       })
 
