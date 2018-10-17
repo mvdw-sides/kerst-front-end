@@ -138,3 +138,7 @@ td {
   padding:5px 2px 15px 0;
   border-bottom: 1px dotted #a1a6b4;
 }
+
+.overview td {
+  max-width:150px;
+}

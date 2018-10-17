@@ -41,6 +41,10 @@ export class Overview extends Component {
     }
 
     const tableRows = items.map((item, idx) => {
+        const link = item.item.link ? (
+            <a href={item.item.link}rel="noopener noreferrer" target="_blank">Link</a>
+        ) : null;
+
         return (
             <tr key={idx}>
                 <td>
@@ -48,7 +52,7 @@ export class Overview extends Component {
                 <span style={{float:'left', color: item.user.color, paddingLeft: '5px'}}>{item.user.name}</span>
                 </td>
                 <td>{item.item.product}</td>
-                <td>{item.item.link}</td>
+                <td>{link}</td>
                 <td>{item.item.price}</td>
                 <td>{item.item.factor}</td>
                 <td><span className="btn btnSmall" onClick={() => {this.purchase(item.item._id)}}>Meld als gekocht</span></td>
@@ -57,7 +61,7 @@ export class Overview extends Component {
     });
 
     return (
-        <section className="box padded">
+        <section className="box padded overview">
             <h3>De huidige lijst:</h3>
             <div className="tableWrapper">
                 <table>
