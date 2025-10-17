@@ -44,6 +44,18 @@
   overflow-x: auto;
 }
 
+@media (min-width: 1024px) {
+  .modern-table {
+    min-width: 1200px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  .modern-table {
+    min-width: 1000px;
+  }
+}
+
 .modern-table {
   width: 100%;
   border-collapse: collapse;

@@ -50,6 +50,8 @@
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .price-symbols {
@@ -57,11 +59,13 @@
   color: #059669;
   font-size: 1.2em;
   letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 .price-range {
   color: #64748b;
   font-size: 0.9em;
+  white-space: nowrap;
 }
 
 .price-indicator.read-only {
@@ -72,6 +76,8 @@
   background: #f1f5f9;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 @media (max-width: 768px) {

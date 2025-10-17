@@ -17,7 +17,8 @@
 
 .box {
   margin:0 auto;
-  width: 960px;
+  width: 90%;
+  max-width: 1300px;
   background: rgba(255,255,255,0.95);
   color: #1f2937;
   min-height: 100px;
@@ -179,7 +180,8 @@
 .padded {
   margin: 25px auto;
   padding:20px 50px 50px 50px;
-  width: 860px
+  width: 90%;
+  max-width: 1300px;
 }
 
 input {
@@ -245,17 +247,8 @@ td {
 }
 
 /* Responsive adjustments */
-@media (min-width: 1280px) {
-  .box { width: 1100px; }
-  .padded { width: 980px; }
-}
-
 @media (max-width: 1024px) {
-  .box {
-    width: 90%;
-  }
   .padded {
-    width: 90%;
     padding: 20px;
   }
 }
