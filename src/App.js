@@ -1,119 +1,110 @@
-import React, { Component } from 'react';
-import { Route, Switch, Link } from "react-router-dom";
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import './styles/App.css';
 import axios from 'axios';
-import { SelectUser } from './Pages/select';
-import { User } from './Pages/user';
-import { Overview } from './Pages/overview';
-import { Auth } from './Pages/auth';
+import SelectUser from './Pages/select';
+import User from './Pages/user';
+import Overview from './Pages/overview';
+import Auth from './Pages/auth';
 
-class App extends Component {
+export default function App(props) {
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [user, setUserState] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const [message, setMessage] = useState(null);
 
-  constructor (props) {
-    super();
-    this.props = props;
-    this.req = null;
-    this.state = {
-      users: [],
-      user: null,
-      auth: null,
-      message: null,
+  useEffect(() => {
+    const stored = localStorage.getItem('pw');
+    if (stored) {
+      setAuth(stored);
     }
+  }, []);
 
-    this.setUser = this.setUser.bind(this);
-    this.required = this.required.bind(this);
-    this.setPass = this.setPass.bind(this);
-  }
-
-  async componentWillMount() {
-    await this.getPassword();
-    await this.setReq();
-    this.getUsers();
-
-  }
-
-  async setReq() {
-    const instance = axios.create({
-      baseURL: this.props.base,
-      headers: {
-        common: {
-          Authorization: this.state.auth
-        }
-      }
+  const req = useMemo(() => {
+    return axios.create({
+      baseURL: props.base,
+      headers: { common: { Authorization: auth } }
     });
-    this.req = instance;
-    return true;
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
 
-  getPassword() {
-    const auth = localStorage.getItem('pw');
-    this.setState({auth});
-  }
+  const getUsers = useCallback(async () => {
+    try {
+      const response = await req.get(`/users`);
+      setUsers(response.data);
+      setMessage(null);
+    } catch (e) {
+      localStorage.removeItem('pw');
+      setAuth(null);
+      setMessage(auth ? 'verkeerde wachtwoord' : '');
+    }
+  }, [req, auth]);
 
-  async setPass(pw) {
+  useEffect(() => {
+    if (auth) {
+      getUsers();
+    }
+  }, [auth, getUsers]);
+
+  const setPass = async (pw) => {
     localStorage.setItem('pw', pw);
-    this.setState({auth: pw});
-    await this.getPassword();
-    await this.setReq();
-    this.getUsers();
-  }
+    setAuth(pw);
+  };
 
-  setUser(user) {
-    this.setState({user});
-    return this.props.history.push(`/user/${user._id}`);
-  }
+  const logout = () => {
+    if (window.confirm('Weet je zeker dat je wilt uitloggen?')) {
+      localStorage.removeItem('pw');
+      setAuth(null);
+      setUserState(null);
+      setUsers([]);
+      setMessage(null);
+    }
+  };
 
-  required(field) {
+  const setUser = (selectedUser) => {
+    setUserState(selectedUser);
+    navigate(`/user/${selectedUser._id}`);
+  };
+
+  const required = (field) => {
     if (!field) {
-      this.props.history.push(`/`);
+      navigate(`/`);
       return false;
     }
     return true;
-  }
+  };
 
-  async getUsers() {
-    try {
-      const response = await this.req.get(`/users`);
-      this.setState({users: response.data, message: null});
-    } catch(e) {
-      localStorage.removeItem('pw');
+  const error = message ? (<h5 style={{color:'red', textAlign: 'center'}}>{message}</h5>) : null;
+  const menu = user ? (
+    <div className="menu">
+      <NavLink to="/overview" className={({isActive}) => isActive ? 'active' : undefined}>Overzicht</NavLink>
+      <NavLink to={`/user/${user._id}`} className={({isActive}) => isActive ? 'active' : undefined}>Mijn lijstje</NavLink>
+      <NavLink to="/" className={({isActive}) => isActive ? 'active' : undefined}>Andere gebruiker</NavLink>
+    </div>
+  ) : null;
 
-      this.setState({auth: null, message: this.state.auth ? 'verkeerde wachtwoord' : ''})
-    }
-    
-  }
-
-  render() {
-
-    const {users, user, auth, message} = this.state;
-
-    const error = message? <h5 style={{color:'red', textAlign: 'center'}}>{message}</h5> : null;
-    let menu;
-    if (user) {
-      menu = (
-        <div className="menu">
-          <Link to="/overview">Overzicht</Link>
-          <Link to={`/user/${user._id}`}>Mijn lijstje</Link>
-        </div>
-      );
-    }
-    return (
-      <div className="App">
-        <header className="header">
-          <h2><i className="ion ion-ios-list-outline"></i> <br /> kerst wens lijstjes</h2>
-          { menu }
-        </header>
-        { error }
-        { !auth ? <Auth {...this.props} setPass={this.setPass}/> : (
-          <Switch>
-          <Route exact path="/" component={(props) => <SelectUser {...this.props} req={this.req} {...props} users={users} setUser={this.setUser}/>} />
-          <Route exact path="/user/:userId" component={(props) => <User {...this.props} req={this.req} required={this.required} {...props} users={users} user={user}/>} />
-          <Route exact path="/overview" component={(props) => <Overview {...this.props} req={this.req} required={this.required} {...props} users={users} user={user}/>} />
-        </Switch>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <header className="header">
+        <h2>📝 <br /> kerst wens lijstjes</h2>
+        { menu }
+      </header>
+      { error }
+      { !auth ? <Auth {...props} setPass={setPass}/> : (
+        <>
+          <Routes>
+            <Route path="/" element={<SelectUser {...props} req={req} users={users} setUser={setUser}/>} />
+            <Route path="/user/:userId" element={<User {...props} req={req} required={required} users={users} user={user}/>} />
+            <Route path="/overview" element={<Overview {...props} req={req} required={required} users={users} user={user}/>} />
+          </Routes>
+          <div className="logout-container">
+            <button className="logout-button" onClick={logout}>
+              🚪 Uitloggen
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
-
-export default App;

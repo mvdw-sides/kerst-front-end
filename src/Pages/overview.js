@@ -1,85 +1,45 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import ModernTable from '../components/ModernTable';
 
-export class Overview extends Component {
+export default function Overview(props) {
+  const { user, req, required } = props;
+  const [items, setItems] = useState([]);
 
-  constructor (props) {
-    super();
-    this.props = props;
-    this.state = {
-      users: props.users,
-      user: props.user,
-      items: [],
-    }
-  }
+  useEffect(() => {
+    if (!required(user)) return;
+    (async () => {
+      const response = await req.get(`/users/${user._id}/overview`);
+      setItems(response.data);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-  componentWillMount() {
-    this.props.required(this.state.user)
-    this.getItems();
-  }
+  const purchase = async (_id) => {
+    await req.post(`/users/${user._id}/purchases`, { _id });
+    setItems(prev => prev.filter((entry) => entry.item._id !== _id));
+  };
 
-  async getItems(){
-    const response = await this.props.req.get(`/users/${this.state.user._id}/overview`);
-    this.setState({items: response.data});
-  }
+  if (!user) return (<div />);
 
-  async purchase(_id) {
-    await this.props.req.post(`/users/${this.state.user._id}/purchases`, { _id });
-    const items = this.state.items.filter((item) => {
-        return (item.item._id !== _id)
-    });
-    this.setState({items});
-  }
+  const mappedItems = items.map((entry) => ({
+    _id: entry.item._id,
+    product: entry.item.product,
+    link: entry.item.link,
+    price: entry.item.price,
+    factor: entry.item.factor,
+    __user: entry.user
+  }));
 
-
-  render() {
-
-    const {user, items} = this.state;
-
-    if (!user) {
-        return (<div />);
-    }
-
-    const tableRows = items.map((item, idx) => {
-        const link = item.item.link ? (
-            <a href={item.item.link}rel="noopener noreferrer" target="_blank">Link</a>
-        ) : null;
-
-        return (
-            <tr key={idx}>
-                <td>
-                <div style={{float:'left', display: 'inline-block', border: `2px solid ${item.user.color}` ,width:'20px',height:'20px', borderRadius:'100px', backgroundSize:'contain', backgroundImage:`url(${item.user.image})`}}></div>
-                <span style={{float:'left', color: item.user.color, paddingLeft: '5px'}}>{item.user.name}</span>
-                </td>
-                <td>{item.item.product}</td>
-                <td>{link}</td>
-                <td>{item.item.price}</td>
-                <td>{item.item.factor}</td>
-                <td><span className="btn btnSmall" onClick={() => {this.purchase(item.item._id)}}>Meld als gekocht</span></td>
-            </tr>
-        );
-    });
-
-    return (
-        <section className="box padded overview">
-            <h3>De huidige lijst:</h3>
-            <div className="tableWrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Gebruiker</th>
-                            <th>Product</th>
-                            <th>Link</th>
-                            <th>Prijs</th>
-                            <th>Factor</th>
-                            <th>status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { tableRows }
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    );
-  }
+  return (
+    <section className="box padded overview">
+      <h3>Overzicht van alle wensen (voor cadeautjes kopen)</h3>
+      <ModernTable 
+        items={mappedItems}
+        onPurchase={(id) => purchase(id)}
+        showPurchaseButton={true}
+        showRequester={true}
+        title="Alle wensen"
+      />
+    </section>
+  );
 }

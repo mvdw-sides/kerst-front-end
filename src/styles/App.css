@@ -1,10 +1,14 @@
 .header {
   text-align: center;
+  padding: 20px 0;
 }
 
 .header h2{
-  color:#f8f8f8;
-  font-size: 3em;
+  color: #ffffff;
+  font-size: 2.5em;
+  margin: 0 0 20px 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-weight: 600;
 }
 
 .header h2 i {
@@ -14,24 +18,46 @@
 .box {
   margin:0 auto;
   width: 960px;
-  background: #f8f8f8;
-  color: #000100;
+  background: rgba(255,255,255,0.95);
+  color: #1f2937;
   min-height: 100px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 8px #94c5cc;
+  border-radius: 20px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .menu a{
-  color: #f8f8f8;
+  color: rgba(255,255,255,0.9);
   text-decoration: none;
-  border-bottom: 1px dotted #f8f8f8;
-  padding: 10px 10px;
-  margin: 10px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  border: 2px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
 }
 
 .menu a:hover {
-  background: #f8f8f8;
-  color: #b4d2e7;
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-1px);
+}
+
+.menu a.active {
+  background: #ffffff;
+  color: #667eea;
+  border-color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .box h3 {
@@ -52,6 +78,8 @@
   cursor:pointer;
   color: #a1a6b4;
   text-decoration: underline;
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
 }
 
 .box .user-select .profile:first-child {
@@ -73,6 +101,79 @@
   margin: 10px auto;
   background-size: contain;
   background-position:center;
+}
+
+/* New vertical user list */
+.user-list { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 0 16px 24px 16px; }
+.profile-row { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  padding: 16px 20px; 
+  border-radius: 16px; 
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.profile-row:hover { 
+  background: #f8fafc; 
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+.profile-row:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.profile-row .avatar { 
+  width: 48px; 
+  height: 48px; 
+  border-radius: 9999px; 
+  background-size: cover; 
+  background-position: center; 
+  border: 3px solid #e5e7eb;
+  flex-shrink: 0;
+}
+.profile-row .name { 
+  font-weight: 600; 
+  color: #1f2937; 
+  font-size: 16px;
+}
+.profile-row .chevron { 
+  margin-left: auto; 
+  color: #6b7280;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Two columns for wider screens */
+@media (min-width: 768px) {
+  .user-list { grid-template-columns: 1fr 1fr; }
+}
+
+/* Logout button */
+.logout-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.logout-button {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: rgba(255,255,255,0.2);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.3);
 }
 
 .padded {
@@ -141,4 +242,60 @@ td {
 
 .overview td {
   max-width:150px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 1280px) {
+  .box { width: 1100px; }
+  .padded { width: 980px; }
+}
+
+@media (max-width: 1024px) {
+  .box {
+    width: 90%;
+  }
+  .padded {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header h2{
+    font-size: 2em;
+  }
+  .menu {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .menu a {
+    margin: 0;
+    padding: 10px 16px;
+  }
+  .box .user-select {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  .box .user-select .profile {
+    width: 40%;
+    padding: 0 10px 10px 10px;
+  }
+  input, select {
+    font-size: 1em;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h2 {
+    font-size: 1.5em;
+  }
+  .box .user-select .profile {
+    width: 100%;
+  }
+  .box .user-select .profile .img {
+    width: 80px;
+    height: 80px;
+  }
 }

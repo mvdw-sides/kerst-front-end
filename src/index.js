@@ -1,13 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './styles/index.css';
 import App from './App';
-import { Route, BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render((
-    <div>
-        <BrowserRouter>
-            <Route path="/" render={ props => <App {...props} base="https://api.kerst.vdweem.xyz"/>} public />
-        </BrowserRouter>
-    </div>
-), document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
+    <BrowserRouter>
+        <App base="https://api.kerst.vdweem.xyz"/>
+    </BrowserRouter>
+);
